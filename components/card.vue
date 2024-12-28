@@ -197,7 +197,7 @@ const addNew = () => {
 };
 
 const shuffleCards = computed(() => {
-  return cards.value.sort(() => Math.random() - 0.5);
+  return cards.value.toSorted(() => Math.random() - 0.5);
 });
 
 const removeCard = (index) => {

@@ -1,5 +1,7 @@
 <template>
-  <div>
-    <Card></Card>
-  </div>
+  <v-app>
+    <div>
+      <Card></Card>
+    </div>
+  </v-app>
 </template>

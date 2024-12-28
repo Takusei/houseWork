@@ -2,10 +2,6 @@
   <div id="flashcard-app" class="container">
     <h1>Flip The Cards</h1>
     <div class="flashcard-form">
-      <label for="front">
-        Front
-        <input v-model="newFront" type="text" id="front" />
-      </label>
       <label for="back">
         Back
         <input v-on:keypress.enter="addNew" v-model="newBack" type="text" id="back" />
@@ -73,7 +69,7 @@ li:hover {
   transform: scale(1.1);
 }
 
-li:nth-child(-n + 3) .card {
+/* li:nth-child(-n + 3) .card {
   background-color: #e65f51;
 }
 
@@ -95,7 +91,7 @@ li:nth-child(4n + 4) .card {
 
 li:nth-child(-7n + 7) .card {
   background-color: #e46055;
-}
+} */
 
 .delete-card {
   position: absolute;
@@ -172,17 +168,13 @@ button:hover {
 <script setup>
 import { ref } from 'vue';
 
-const cards = ref([
-  { front: '', back: 'Paris', flipped: false },
-  { front: '', back: 'Madrid', flipped: false },
-  { front: '', back: 'Rome', flipped: false },
-]);
+const cards = ref([]);
 
 const newBack = ref('');
 const error = ref(false);
 
 const addNew = () => {
-  if (newFront.value && newBack.value) {
+  if (newBack.value) {
     cards.value.push({ front:'', back: newBack.value, flipped: false });
     newBack.value = '';
     error.value = false;

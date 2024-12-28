@@ -18,9 +18,9 @@
     <ul class="flashcard-list">
       <li v-for="(card, index) in shuffleCards"
         :key="index" 
-        @click="toggleCard(card, $event)">
-        <transition name="flip">
-          <p :key="index" class="card">
+        @click="toggleCard(card)">
+        <transition name="flip" @after-enter="onTransitionEnd">
+          <p :key="card.flipped" class="card">
             {{ card.flipped ? card.back : card.front }}
             <span v-on:click="cards.splice(index, 1)" class="delete-card">X</span>
           </p>
@@ -58,7 +58,7 @@ li {
   width: 150px;
   height: 175px;
   padding: 80px 50px;
-  background-color: #51aae5;
+  background-color: #76757d;
   border-radius: 7px;
   margin: 5px;
   text-align: center;
@@ -170,6 +170,15 @@ button:hover {
   color: #e44e42;
   font-weight: 600;
 }
+
+.player1 {
+  background-color: #e65f51 !important;
+}
+
+.player2 {
+  background-color: #70a66f !important;
+}
+
 </style>
 
 <script setup>
@@ -195,17 +204,16 @@ const removeCard = (index) => {
   cards.value.splice(index, 1);
 };
 
-
-const player1Color = ref('#e65f51');
-const player2Color = ref('#70a66f');
-
-const toggleCard = (card, event) => {
+const toggleCard = (card) => {
   if (!card.flipped) {
     card.flipped = !card.flipped;
     count.value += 1;
-
-    const clickedCard = event.currentTarget.querySelector('p');
-    clickedCard.style.backgroundColor = count.value % 2 === 0 ?  player1Color.value : player2Color.value;
   }
+};
+
+const onTransitionEnd = (el) => {
+  const clickedCard = el
+  console.log(clickedCard);
+  clickedCard.classList.add('player' + (count.value % 2 + 1));
 };
 </script>

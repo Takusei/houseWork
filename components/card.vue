@@ -1,19 +1,26 @@
 <template>
   <div id="flashcard-app" class="container">
-    <h1>Flip The Cards</h1>
+    <h1>家事スケジュール</h1>
     <div class="flashcard-form">
       <label for="back">
-        Back
+        Task
         <input v-on:keypress.enter="addNew" v-model="newBack" type="text" id="back" />
       </label>
       <button v-on:click="addNew">Add a New Card</button>
-      <button v-on:click="shuffle">shuffle the Cards</button>
-      <span v-show="error" class="error">Oops! Flashcards need a front and a back.</span>
     </div>
+
+    <v-chip-group>
+      <v-chip v-for = "(card, index) in cards" :key="index" :title="'Item ' + card.back" @click="removeCard(index)">
+        {{ card.back }}
+      </v-chip>
+    </v-chip-group>
+
     <ul class="flashcard-list">
-      <li v-for="(card, index) in cards" :key="index" v-on:click="toggleCard(card)">
+      <li v-for="(card, index) in shuffleCards"
+        :key="index" 
+        @click="toggleCard(card, $event)">
         <transition name="flip">
-          <p :key="card.flipped" class="card">
+          <p :key="index" class="card">
             {{ card.flipped ? card.back : card.front }}
             <span v-on:click="cards.splice(index, 1)" class="delete-card">X</span>
           </p>
@@ -171,25 +178,34 @@ import { ref } from 'vue';
 const cards = ref([]);
 
 const newBack = ref('');
-const error = ref(false);
+const count = ref(0);
 
 const addNew = () => {
   if (newBack.value) {
-    cards.value.push({ front:'', back: newBack.value, flipped: false });
+    cards.value.push({ front: '', back: newBack.value, flipped: false });
     newBack.value = '';
-    error.value = false;
-  } else {
-    error.value = true;
-  }
+  } 
 };
 
-const shuffle = () => {
-  cards.value.sort(() => Math.random() - 0.5);
-}
+const shuffleCards = computed(() => {
+  return cards.value.sort(() => Math.random() - 0.5);
+});
 
-const toggleCard = (card) => {
+const removeCard = (index) => {
+  cards.value.splice(index, 1);
+};
+
+
+const player1Color = ref('#e65f51');
+const player2Color = ref('#70a66f');
+
+const toggleCard = (card, event) => {
   if (!card.flipped) {
     card.flipped = !card.flipped;
+    count.value += 1;
+
+    const clickedCard = event.currentTarget.querySelector('p');
+    clickedCard.style.backgroundColor = count.value % 2 === 0 ?  player1Color.value : player2Color.value;
   }
 };
 </script>

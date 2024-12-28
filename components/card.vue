@@ -1,6 +1,6 @@
 <template>
   <div id="flashcard-app" class="container">
-    <h1>Flashcard App!</h1>
+    <h1>Flip The Cards</h1>
     <div class="flashcard-form">
       <label for="front">
         Front
@@ -173,19 +173,17 @@ button:hover {
 import { ref } from 'vue';
 
 const cards = ref([
-  { front: 'What is the capital of France?', back: 'Paris', flipped: false },
-  { front: 'What is the capital of Spain?', back: 'Madrid', flipped: false },
-  { front: 'What is the capital of Italy?', back: 'Rome', flipped: false },
+  { front: '', back: 'Paris', flipped: false },
+  { front: '', back: 'Madrid', flipped: false },
+  { front: '', back: 'Rome', flipped: false },
 ]);
 
-const newFront = ref('');
 const newBack = ref('');
 const error = ref(false);
 
 const addNew = () => {
   if (newFront.value && newBack.value) {
-    cards.value.push({ front: newFront.value, back: newBack.value, flipped: false });
-    newFront.value = '';
+    cards.value.push({ front:'', back: newBack.value, flipped: false });
     newBack.value = '';
     error.value = false;
   } else {
@@ -198,6 +196,8 @@ const shuffle = () => {
 }
 
 const toggleCard = (card) => {
-  card.flipped = !card.flipped;
+  if (!card.flipped) {
+    card.flipped = !card.flipped;
+  }
 };
 </script>
